@@ -12,7 +12,7 @@ import java.util.UUID;
 @RequestMapping("/message")
 public class WebService {
 
-    private MessageFacade messageFacade;
+    private final MessageFacade messageFacade;
 
     @Autowired
     public WebService(MessageFacade messageFacade) {

@@ -23,8 +23,8 @@ import java.util.concurrent.ConcurrentMap;
 @EnableKafka
 public class MessageFacade {
 
-    private KafkaTemplate<String, String> kafkaTemplate;
-    private ConcurrentMap<String, String> map;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ConcurrentMap<String, String> map;
 
     @Autowired
     public MessageFacade(KafkaTemplate<String, String> kafkaTemplate) {
