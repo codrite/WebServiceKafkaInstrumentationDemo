@@ -1,8 +1,9 @@
 package com.codrite.springkafkaws;
 
-import datadog.trace.api.Trace;
-import io.opentracing.Span;
-import io.opentracing.util.GlobalTracer;
+import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
+import org.apache.skywalking.apm.toolkit.trace.Tag;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,28 +23,19 @@ public class WebService {
     @PostMapping
     @Trace(operationName = "WebServiceCreate")
     public String create() {
-        Span span = GlobalTracer.get().activeSpan();
-        try {
-            String uuid = UUID.randomUUID().toString();
-            String ts = System.currentTimeMillis() + "";
-            span.setTag("UUID", uuid);
-            messageFacade.publish(uuid, ts);
-            return uuid;
-        } finally {
-            span.finish();
-        }
+        String uuid = UUID.randomUUID().toString();
+        String ts = System.currentTimeMillis() + "";
+        TraceContext.putCorrelation("UUID", uuid);
+        messageFacade.publish(uuid, ts);
+        return uuid;
     }
 
     @GetMapping("/{uuid}")
     @Trace(operationName = "WebServiceGet")
+    @Tag(key = "UUID", value = "arg[0]")
     public String get(@PathVariable("uuid") String uuid) {
-        Span span = GlobalTracer.get().activeSpan();
-        try {
-            span.setTag("UUID", uuid);
-            return messageFacade.consume(uuid);
-        } finally {
-            span.finish();
-        }
+        TraceContext.putCorrelation("UUID", uuid);
+        return messageFacade.consume(uuid);
     }
 
 }

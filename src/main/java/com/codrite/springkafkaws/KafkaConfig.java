@@ -21,7 +21,7 @@ public class KafkaConfig {
     kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConcurrency(1);
+        factory.setConcurrency(10);
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
