@@ -1,5 +1,7 @@
 package com.codrite.springkafkaws;
 
+import com.timgroup.statsd.NonBlockingStatsDClientBuilder;
+import com.timgroup.statsd.StatsDClient;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -15,6 +17,11 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class KafkaConfig {
+
+    @Bean
+    public StatsDClient client(){
+        return new NonBlockingStatsDClientBuilder().prefix("statsd").hostname("localhost").port(8125).build();
+    }
 
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, String>
