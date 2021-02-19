@@ -1,0 +1,11 @@
+FROM openjdk:15-alpine
+
+RUN apk --no-cache add curl
+RUN apk --no-cache add dos2unix
+RUN apk --no-cache add bash
+
+COPY target/spring-kafka-ws-0.0.1-SNAPSHOT.jar /opt/kafka-spring-app.jar
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "/opt/kafka-spring-app.jar"]

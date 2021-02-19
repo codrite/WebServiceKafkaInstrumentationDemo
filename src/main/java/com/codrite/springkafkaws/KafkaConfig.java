@@ -20,7 +20,7 @@ public class KafkaConfig {
 
     @Bean
     public StatsDClient client(){
-        return new NonBlockingStatsDClientBuilder().prefix("statsd").hostname("localhost").port(8125).build();
+        return new NonBlockingStatsDClientBuilder().prefix("letshavefun").hostname("localhost").port(8125).build();
     }
 
     @Bean

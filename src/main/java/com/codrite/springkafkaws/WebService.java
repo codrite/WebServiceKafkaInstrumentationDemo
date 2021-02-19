@@ -3,8 +3,6 @@ package com.codrite.springkafkaws;
 import com.timgroup.statsd.Event;
 import com.timgroup.statsd.StatsDClient;
 import datadog.trace.api.Trace;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.opentracing.Span;
 import io.opentracing.util.GlobalTracer;
 import lombok.extern.slf4j.Slf4j;
@@ -40,32 +38,39 @@ public class WebService {
             String ts = System.currentTimeMillis() + "";
             span.setTag("UUID", uuid);
             messageFacade.publish(uuid, ts);
+            letsSlowDownTheSystem();
             long exec = Duration.between(start, LocalDateTime.now()).toMillis();
             log.info("Time taken to process : {}", exec);
             statsDClient.recordExecutionTime("newRequestTimeToCreate", exec);
-            statsDClient.gauge("newRequestTimeToCreateGauge", exec);
-            statsDClient.incrementCounter("newRequest");
+            statsDClient.gauge("newRequestTimeToCreateGauge", exec, "uuid:" + uuid);
+            statsDClient.incrementCounter("newRequest", "uuid:" + uuid);
             return uuid;
         } finally {
             span.finish();
         }
+    }
 
+    @Trace(operationName = "I_AM_THE_CULPRIT")
+    void letsSlowDownTheSystem() {
+        Span span = GlobalTracer.get().activeSpan();
+        try { Thread.sleep(40); } catch(InterruptedException interruptedException) {} // must try at home
+        span.finish();
     }
 
     Event createNewUUIDEvent(String uuid) {
         return Event.builder()
-                    .withAlertType(Event.AlertType.INFO)
-                    .withText("Received " + uuid + " on " + LocalDateTime.now())
-                    .withTitle("UUID Tracking")
-                    .build();
+                .withAlertType(Event.AlertType.INFO)
+                .withText("Received " + uuid + " on " + LocalDateTime.now())
+                .withTitle("UUID Tracking")
+                .build();
     }
 
     Event createNewEvent(String message) {
         return Event.builder()
-                    .withAlertType(Event.AlertType.INFO)
-                    .withText(message)
-                    .withTitle("Consumption Usage")
-                    .build();
+                .withAlertType(Event.AlertType.INFO)
+                .withText(message)
+                .withTitle("Consumption Usage")
+                .build();
     }
 
     @GetMapping("/{uuid}")
@@ -75,20 +80,11 @@ public class WebService {
         statsDClient.recordEvent(createNewEvent("Web service consumption tracking"));
         try {
             span.setTag("UUID", uuid);
-            statsDClient.decrementCounter("newRequest");
-            track();
+            statsDClient.decrementCounter("newRequest", "uuid:" + uuid);
             return messageFacade.consume(uuid);
         } finally {
             span.finish();
         }
-    }
-
-    SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
-    Counter counter = Counter.builder("Invocations")
-                             .register(simpleMeterRegistry);
-    public String track() {
-        counter.increment();
-        return ""+counter.count();
     }
 
 }
