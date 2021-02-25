@@ -16,19 +16,19 @@ The following guides illustrate how to use some features concretely:
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
 * [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 
-### About this application
+### <span style="color:orange"> About this application <span>
 This is a simple springboot web application to demo datadog integration.
 
-Application  Endpoint - **http://localhost:8081/message**
+Application  Endpoint - http://localhost:8081/message
 
-#### Get
+#### <span style="color:orange">Get</span>
   uuid sent to this endpoint is looked up in map and removed, the timestamp value is returned to the caller.
 
-#### Post
+#### <span style="color:orange">Post</span>
   creates a uuid and timestamp followed by pushing it to kafka test topic
   consumer of the kafka topic adds the message in a map.
 
-#### Pre-requisites
+#### <span style="color:green">Pre-requisites<span>
 - You will need to run kafka locally but thats it, no additional step (default topic creation is enabled)
 - You will need to install datadog agent (better to install it on your local computer)
 - Apache benchmark for load testing / simulating traffic.
