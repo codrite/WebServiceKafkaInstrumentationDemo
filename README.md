@@ -18,16 +18,17 @@ The following guides illustrate how to use some features concretely:
 
 ### About this application
 
-####SpringBoot Web App
+#### SpringBoot Web App
 
 **http://localhost:8081/message**
 
-####Get
+#### Get
   uuid sent to this endpoint is looked up in map and removed, the timestamp value is returned to the caller
 
-####Post
+#### Post
   creates a uuid and timestamp followed by pushing it to kafka test topic
   consumer of the kafka topic adds the message in a map
-####Pre-requisites
+
+#### Pre-requisites
 - You will need to run kafka locally but thats it, no additional step (default topic creation is enabled)
 - You will need to install datadog agent (better to install it on your local computer)
