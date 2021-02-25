@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 @RestController
@@ -50,10 +51,11 @@ public class WebService {
         }
     }
 
+    Random random = new Random();
     @Trace(operationName = "I_AM_THE_CULPRIT")
     void letsSlowDownTheSystem() {
         Span span = GlobalTracer.get().activeSpan();
-        try { Thread.sleep(40); } catch(InterruptedException interruptedException) {} // must try at home
+        try { Thread.sleep(random.nextInt(100)); } catch(InterruptedException interruptedException) {} // must try at home
         span.finish();
     }
 
