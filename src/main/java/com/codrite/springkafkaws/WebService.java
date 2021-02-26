@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -30,7 +31,7 @@ public class WebService {
 
     @PostMapping
     @Trace(operationName = "WebServiceCreate")
-    public String create() {
+    public String create() throws InterruptedException {
         LocalDateTime start = LocalDateTime.now();
         Span span = GlobalTracer.get().activeSpan();
         try {
@@ -53,9 +54,12 @@ public class WebService {
 
     Random random = new Random();
     @Trace(operationName = "I_AM_THE_CULPRIT")
-    void letsSlowDownTheSystem() {
+    void letsSlowDownTheSystem() throws InterruptedException {
         Span span = GlobalTracer.get().activeSpan();
-        try { Thread.sleep(random.nextInt(100)); } catch(InterruptedException interruptedException) {} // must try at home
+        int millis = random.nextInt(100);
+        if(millis < 50)
+            throw new IllegalArgumentException("Why less than 50 ms?");
+        Thread.sleep(millis); // must try at home
         span.finish();
     }
 
@@ -87,6 +91,12 @@ public class WebService {
         } finally {
             span.finish();
         }
+    }
+
+    @ExceptionHandler
+    public void handle(HttpServletResponse response, Exception exception) {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setHeader("error", exception.getMessage());
     }
 
 }
