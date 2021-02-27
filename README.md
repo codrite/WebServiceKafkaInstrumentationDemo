@@ -36,5 +36,5 @@ Application  Endpoint - http://localhost:8081/message
 #### Datadog Screenboard
 - A Sample dashboard can be found in `datadog/demo-dashboard.json` that can be imported into datadog, no need to create from scratch
 
-![Image of Screenboard]
+![Image of Screenshot]
 (https://github.com/codrite/WebServiceKafkaInstrumentationDemo/blob/feature/datadog-integration/datadog/Screenshot.png)
