@@ -32,3 +32,6 @@ Application  Endpoint - http://localhost:8081/message
 - You will need to run kafka locally but thats it, no additional step (default topic creation is enabled)
 - You will need to install datadog agent (better to install it on your local computer)
 - Apache benchmark for load testing / simulating traffic.
+
+#### Datadog Screenboard
+- A Sample dashboard can be found in `datadog/demo-dashboard.json` that can be imported into datadog, no need to create from scratch
