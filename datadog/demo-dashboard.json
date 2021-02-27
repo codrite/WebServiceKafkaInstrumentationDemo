@@ -1,0 +1,288 @@
+{
+  "title": "Demo Datadog Screenboard",
+  "description": "",
+  "widgets": [
+    {
+      "id": 8673047002431946,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 68,
+        "height": 14
+      },
+      "definition": {
+        "title": "Resources",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "cell_display_mode": [
+              "bar"
+            ],
+            "apm_stats_query": {
+              "primary_tag": "",
+              "name": "servlet.request",
+              "service": "com.codrite.springkafkaws.springkafkawsapplication",
+              "row_type": "resource",
+              "env": "none",
+              "columns": [
+                {
+                  "cell_display_mode": "bar",
+                  "name": "Hits"
+                },
+                {
+                  "cell_display_mode": "bar",
+                  "name": "MeanLatency"
+                },
+                {
+                  "cell_display_mode": "bar",
+                  "name": "ErrorRate"
+                },
+                {
+                  "cell_display_mode": "bar",
+                  "name": "Duration"
+                },
+                {
+                  "name": "p100",
+                  "order": "desc"
+                },
+                {
+                  "cell_display_mode": "bar",
+                  "name": "Errors"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 3609441883069086,
+      "layout": {
+        "x": 71,
+        "y": 54,
+        "width": 67,
+        "height": 20
+      },
+      "definition": {
+        "title": "",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "event_stream",
+        "query": "*UUID*",
+        "tags_execution": "and",
+        "event_size": "s"
+      }
+    },
+    {
+      "id": 3404267250944094,
+      "layout": {
+        "x": 71,
+        "y": 76,
+        "width": 67,
+        "height": 14
+      },
+      "definition": {
+        "type": "note",
+        "content": "# Action Items\n\n#### Create Alerts\n#### Create Monitors\n#### Create Timeseries for throughput and latency\n",
+        "background_color": "white",
+        "font_size": "14",
+        "text_align": "left",
+        "show_tick": true,
+        "tick_pos": "50%",
+        "tick_edge": "left"
+      }
+    },
+    {
+      "id": 6891269969198746,
+      "layout": {
+        "x": 71,
+        "y": 93,
+        "width": 67,
+        "height": 9
+      },
+      "definition": {
+        "title": "",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "event_timeline",
+        "query": "status:info",
+        "tags_execution": "and"
+      }
+    },
+    {
+      "id": 4069004981243404,
+      "layout": {
+        "x": 71,
+        "y": 0,
+        "width": 67,
+        "height": 31
+      },
+      "definition": {
+        "title_size": "13",
+        "title_align": "left",
+        "type": "manage_status",
+        "summary_type": "monitors",
+        "display_format": "countsAndList",
+        "color_preference": "background",
+        "hide_zero_counts": true,
+        "show_last_triggered": true,
+        "query": "",
+        "sort": "triggered,desc",
+        "count": 50,
+        "start": 0
+      }
+    },
+    {
+      "id": 623576299831074,
+      "layout": {
+        "x": 71,
+        "y": 33,
+        "width": 68,
+        "height": 18
+      },
+      "definition": {
+        "title": "Web Request Count",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "vertical",
+        "legend_columns": [
+          "avg",
+          "min",
+          "max",
+          "value",
+          "sum"
+        ],
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "sum:letshavefun.newRequest{*}.as_count()",
+            "style": {
+              "palette": "dog_classic",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          },
+          {
+            "rum_query": {
+              "index": "*",
+              "search": {
+                "query": ""
+              },
+              "group_by": [],
+              "compute": {
+                "facet": "count",
+                "aggregation": "count"
+              }
+            }
+          }
+        ],
+        "yaxis": {
+          "scale": "linear",
+          "label": "",
+          "include_zero": true,
+          "min": "auto",
+          "max": "auto"
+        },
+        "markers": []
+      }
+    },
+    {
+      "id": 1606609832500694,
+      "layout": {
+        "x": 0,
+        "y": 94,
+        "width": 68,
+        "height": 15
+      },
+      "definition": {
+        "title": "",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "vertical",
+        "legend_columns": [
+          "avg",
+          "min",
+          "max",
+          "value",
+          "sum"
+        ],
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "max:letshavefun.newRequestTimeToCreateGauge{*}",
+            "style": {
+              "palette": "dog_classic",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ],
+        "yaxis": {
+          "scale": "linear",
+          "label": "",
+          "include_zero": true,
+          "min": "auto",
+          "max": "auto"
+        },
+        "markers": []
+      }
+    },
+    {
+      "id": 5448302265089158,
+      "layout": {
+        "x": 0,
+        "y": 74,
+        "width": 67,
+        "height": 18
+      },
+      "definition": {
+        "title": "",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "q": "top(max:letshavefun.newRequestTimeToCreateGauge{*} by {uuid}, 100, 'mean', 'desc')"
+          }
+        ]
+      }
+    },
+    {
+      "id": 394365430629170,
+      "layout": {
+        "x": 0,
+        "y": 16,
+        "width": 68,
+        "height": 56
+      },
+      "definition": {
+        "title": "com.codrite.springkafkaws.springkafkawsapplication #env:none",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "trace_service",
+        "env": "none",
+        "service": "com.codrite.springkafkaws.springkafkawsapplication",
+        "span_name": "servlet.request",
+        "show_hits": true,
+        "show_errors": true,
+        "show_latency": true,
+        "show_breakdown": true,
+        "show_distribution": true,
+        "show_resource_list": true,
+        "size_format": "large",
+        "display_format": "three_column"
+      }
+    }
+  ],
+  "template_variables": [],
+  "layout_type": "free",
+  "is_read_only": false,
+  "notify_list": [],
+  "id": "z56-33r-mqx"
+}
